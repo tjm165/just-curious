@@ -1,0 +1,6 @@
+.env
+*.tfstate.*
+.terraform
+.terraform.lock.hcl
+terraform.tfstate
+/dist
