@@ -20,12 +20,16 @@ resource "null_resource" "compile" {
   }
 }
 
-# Tommy I think if I print the output here then it will help me understand things
-data "archive_file" "lambda-zip" {
-  type        = "zip"
-  source_dir  = var.runtime == "go1.x" ? null : "${var.source_dir}"
-  source_file  = var.runtime == "go1.x" ? "${var.source_dir}/lambda" : null
-  output_path = local.zip_path
+# Tommy I think if I print the output here then it will help me understand things.
+# Tommy. Create a custom archive_file module that takes a flag for "dir" vs "file".
+module "lambda-zip" {
+  depends_on = [
+    null_resource.compile
+  ]
+  source = "../flex_zip"
+  source_path = var.runtime == "go1.x" ? "${var.source_dir}/lambda" : var.source_dir
+  is_dir = var.runtime != "go1.x"
+    output_path = local.zip_path
 }
 
 # if the runtime is "go1.x" then GOOS=linux GOARCH=amd64 go build -o main main.go 
@@ -59,7 +63,7 @@ resource "aws_lambda_function" "lambda" {
   function_name    = local.lambda_name
   role             = aws_iam_role.lambda-iam.arn
   handler          = var.runtime == "go1.x" ? "lambda" : "lambda.lambda_handler"
-  source_code_hash = data.archive_file.lambda-zip.output_base64sha256
+  source_code_hash =   module.lambda-zip.zip.output_base64sha256
   runtime          = var.runtime
   tags = {
     Name        = "serverless_template"

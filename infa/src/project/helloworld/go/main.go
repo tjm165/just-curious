@@ -17,7 +17,7 @@ type Response struct {
 
 func HandleRequest(request Request) (Response, error) {
         return Response {
-                Body: fmt.Sprintf("Hello from GetGo new4"),
+                Body: fmt.Sprintf("Test2"),
                 StatusCode: 200,
         }, nil
 }
