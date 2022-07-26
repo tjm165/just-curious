@@ -31,5 +31,5 @@ module "api_lambda_go" {
   source_dir     = "src/project/helloworld/go"
   api_id         = module.global_api_gateway.api_id
   api_source_arn = module.global_api_gateway.execution_arn
-  runtime       = "go1.x"
+  runtime        = "go1.x"
 }

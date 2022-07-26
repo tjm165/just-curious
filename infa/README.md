@@ -18,24 +18,11 @@ Template to write and deploy serverless APIs on AWS
 
 ### Current Goals
 
-- [x] DEFAULT --> Lambda
-- [x] GET --> Lambda
-- [x] GET --> Lambda --> DynamoDB
-- [x] GET -> Lambda -> S3
-- [ ] Specify Terraform Version
-- [ ] POST -> Lambda Graphql -> Mutate/Query DynamoDB
-- [ ] POST -> Lambda Graphql -> Mutate/Query Aurora
-- [ ] Quick start YouTube Video
-- [ ] Explore a data stack
-- [ ] tag
-- [ ] shared state
+1. What do I want to test?
 
 ### Future Goals
 
-1. Improved naming strategy for multiple instances
-1. POST -> Lambda -> SQS
-1. POST -> Lambda -> Firehose
-1. Elastic Map Reduce
+1. Cleanup the default as python.
 
 ## Useful Terraform Commands
 
