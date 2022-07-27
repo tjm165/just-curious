@@ -23,6 +23,14 @@ Template to write and deploy serverless APIs on AWS
 ### Future Goals
 
 1. Cleanup the default as python.
+1. https://docs.aws.amazon.com/lambda/latest/dg/python-package.html
+   1. This was a bit difficult to understand but basically you download the packages and then zip everything up "flat". Want to put packages separate such that can easily be gitignored like npm
+   1. `pip install --target ./package requests`
+   1.
+   ```
+   cd package
+   zip -r ../my-deployment-package.zip .
+   ```
 
 ## Useful Terraform Commands
 

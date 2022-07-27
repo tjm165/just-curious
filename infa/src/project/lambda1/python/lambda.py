@@ -1,6 +1,6 @@
 import json
 from decimal import Decimal
-from botocore.vendored import requests
+import requests
 
 
 def default(obj):

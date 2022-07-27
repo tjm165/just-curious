@@ -4,3 +4,11 @@
 .terraform.lock.hcl
 terraform.tfstate
 /dist
+
+/src/project/lambda1/python/bin
+/src/project/lambda1/python/certifi*
+/src/project/lambda1/python/chardet*
+/src/project/lambda1/python/idna*
+/src/project/lambda1/python/package*
+/src/project/lambda1/python/request*
+/src/project/lambda1/python/urllib3*
