@@ -15,20 +15,39 @@ module "global_api_gateway" {
 }
 
 ### Create a simple lambda at a particular API path
-module "api_lambda_python" {
+module "api_lambda1_python" {
   source         = "./modules/api_lambda"
-  route_key      = "python"
+  route_key      = "python1"
   method_type    = "GET"
-  source_dir     = "src/project/helloworld/python"
+  source_dir     = "src/project/lambda1/python"
   api_id         = module.global_api_gateway.api_id
   api_source_arn = module.global_api_gateway.execution_arn
 }
 
-module "api_lambda_go" {
+module "api_lambda1_go" {
   source         = "./modules/api_lambda"
-  route_key      = "go"
+  route_key      = "go1"
   method_type    = "GET"
-  source_dir     = "src/project/helloworld/go"
+  source_dir     = "src/project/lambda1/go"
+  api_id         = module.global_api_gateway.api_id
+  api_source_arn = module.global_api_gateway.execution_arn
+  runtime        = "go1.x"
+}
+
+module "api_lambda2_python" {
+  source         = "./modules/api_lambda"
+  route_key      = "python2"
+  method_type    = "GET"
+  source_dir     = "src/project/lambda2/python"
+  api_id         = module.global_api_gateway.api_id
+  api_source_arn = module.global_api_gateway.execution_arn
+}
+
+module "api_lambda2_go" {
+  source         = "./modules/api_lambda"
+  route_key      = "go2"
+  method_type    = "GET"
+  source_dir     = "src/project/lambda2/go"
   api_id         = module.global_api_gateway.api_id
   api_source_arn = module.global_api_gateway.execution_arn
   runtime        = "go1.x"
