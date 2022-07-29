@@ -15,14 +15,14 @@ module "global_api_gateway" {
 }
 
 ### Create a simple lambda at a particular API path
-# module "api_lambda1_python" {
-#   source         = "./modules/api_lambda"
-#   route_key      = "python1"
-#   method_type    = "GET"
-#   source_dir     = "src/project/lambda1/python"
-#   api_id         = module.global_api_gateway.api_id
-#   api_source_arn = module.global_api_gateway.execution_arn
-# }
+module "api_lambda1_python" {
+  source         = "./modules/api_lambda"
+  route_key      = "python1"
+  method_type    = "GET"
+  source_dir     = "src/project/lambda1/python"
+  api_id         = module.global_api_gateway.api_id
+  api_source_arn = module.global_api_gateway.execution_arn
+}
 
 # module "api_lambda1_go" {
 #   source         = "./modules/api_lambda"
