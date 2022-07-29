@@ -46,6 +46,7 @@ Generalize into modules
 
 # Scripts
 
+1. API just to have https://ufsjj3gw67.execute-api.us-east-2.amazonaws.com/go2
 1. Add a line `cd /Users/tommymoawad/Coding/aws_to_test && python3 trigger_lambda.py 10`
 1. Get sizes `cd /Users/tommymoawad/Coding/aws_to_test/infa/src/project && python3 trigger_lambda.py 10`
 1. Apply infa `cd /Users/tommymoawad/Coding/aws_to_test/infa && terraform apply --auto-approve`
