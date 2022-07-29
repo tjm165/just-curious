@@ -18,13 +18,20 @@ def run(param):
 
 if __name__ == '__main__':
     pool = multiprocessing.Pool()
-    pool = multiprocessing.Pool(processes=iterations)
+    pool = multiprocessing.Pool(processes=(iterations*2))
     params = []
+    # for i in range(iterations):
+    #     param = {}
+    #     param['i'] = i
+    #     param['url'] = "https://ufsjj3gw67.execute-api.us-east-2.amazonaws.com/python1"
+    #     params.append(param)
+    
     for i in range(iterations):
         param = {}
         param['i'] = i
-        param['url'] = "https://ufsjj3gw67.execute-api.us-east-2.amazonaws.com/python1"
+        param['url'] = "https://ufsjj3gw67.execute-api.us-east-2.amazonaws.com/python2"
         params.append(param)
+
 
     for i in range(iterations, iterations * 2):
         param = {}

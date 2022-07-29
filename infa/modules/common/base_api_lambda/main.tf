@@ -64,6 +64,7 @@ resource "aws_lambda_function" "lambda" {
     Name        = "serverless_template"
     Environment = "production"
   }
+  timeout = 300
 }
 
 resource "aws_apigatewayv2_integration" "lambda-integration" {

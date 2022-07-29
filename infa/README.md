@@ -1,6 +1,6 @@
-# Terraform AWS Serverless API Template
+# Lambda tests
 
-Template to write and deploy serverless APIs on AWS
+[results](https://docs.google.com/spreadsheets/d/1JDyfZowv4baz4-L4gjoERHGiF4njhqyFfTCodCuFZAc/edit?usp=sharing)
 
 ## Getting Started
 
@@ -43,3 +43,11 @@ Template to write and deploy serverless APIs on AWS
 
 `terraform watch`
 Generalize into modules
+
+# Scripts
+
+1. Add a line `cd /Users/tommymoawad/Coding/aws_to_test && python3 trigger_lambda.py 10`
+1. Get sizes `cd /Users/tommymoawad/Coding/aws_to_test/infa/src/project && python3 trigger_lambda.py 10`
+1. Apply infa `cd /Users/tommymoawad/Coding/aws_to_test/infa && terraform apply --auto-approve`
+1. Trigger in parallel `/Users/tommymoawad/Coding/aws_to_test/scripts python3 trigger_lambda.py 10`
+1. Cleanup `/Users/tommymoawad/Coding/aws_to_test && cp scripts/lambda1.py infa/src/project/lambda1/python/lambda.py && cp scripts/lambda2.py infa/src/project/lambda2/python/lambda.py && cp scripts/go2.go infa/src/project/lambda2/go/main.go`

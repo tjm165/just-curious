@@ -12,8 +12,15 @@ def lambda_handler(event, context):
     url = "https://ufsjj3gw67.execute-api.us-east-2.amazonaws.com/python2"
     fetch_resp = requests.get(url).json()['message']
 
+    my_dict = {
+        1: "Hi this is a dict inside Python1!",
+        2: [
+
+        ]
+    }
+
     resp = {
-        "message": "Hello from Lambda1 Python. Lambda2 Python says " + fetch_resp,
+        "message": my_dict[1] + " Python2 says " + fetch_resp,
     }
 
     return {
