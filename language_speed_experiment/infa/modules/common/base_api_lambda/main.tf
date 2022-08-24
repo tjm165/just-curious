@@ -1,7 +1,8 @@
 locals {
   zip_path      = "./dist/${var.source_dir}/lambda.zip"
-  lambda_name   = "lambda-${var.method_type}-${var.route_key}"
-  iam_role_name = "role-api-lambda-${var.route_key}"
+  route_key_no_slashes = replace(var.route_key, "/", "-")
+  lambda_name   = "lambda-${var.method_type}-${local.route_key_no_slashes}"
+  iam_role_name = "role-api-lambda-${local.route_key_no_slashes}"
 }
 
 

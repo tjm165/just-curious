@@ -14,30 +14,61 @@ module "global_api_gateway" {
   name   = local.name
 }
 
-module "api_lambda2_node" {
+module "api_hello_world_node" {
   source         = "./modules/api_lambda"
-  route_key      = "node2"
+  route_key      = "hello_world/node"
   method_type    = "GET"
-  source_dir     = "src/project/lambda2/node"
+  source_dir     = "src/project/hello_world/node"
   api_id         = module.global_api_gateway.api_id
   api_source_arn = module.global_api_gateway.execution_arn
   runtime        = "nodejs12.x"
 }
 
-module "api_lambda2_python" {
+module "api_hello_world_python" {
   source         = "./modules/api_lambda"
-  route_key      = "python2"
+  route_key      = "hello_world/python"
   method_type    = "GET"
-  source_dir     = "src/project/lambda2/python"
+  source_dir     = "src/project/hello_world/python"
   api_id         = module.global_api_gateway.api_id
   api_source_arn = module.global_api_gateway.execution_arn
 }
 
-module "api_lambda2_go" {
+module "api_hello_world_go" {
   source         = "./modules/api_lambda"
-  route_key      = "go2"
+  route_key      = "hello_world/go"
   method_type    = "GET"
-  source_dir     = "src/project/lambda2/go"
+  source_dir     = "src/project/hello_world/go"
+  api_id         = module.global_api_gateway.api_id
+  api_source_arn = module.global_api_gateway.execution_arn
+  runtime        = "go1.x"
+}
+
+###
+
+module "api_217_contains_duplicate_node" {
+  source         = "./modules/api_lambda"
+  route_key      = "217_contains_duplicate/node"
+  method_type    = "GET"
+  source_dir     = "src/project/217_contains_duplicate/node"
+  api_id         = module.global_api_gateway.api_id
+  api_source_arn = module.global_api_gateway.execution_arn
+  runtime        = "nodejs12.x"
+}
+
+module "api_217_contains_duplicate_python" {
+  source         = "./modules/api_lambda"
+  route_key      = "217_contains_duplicate/python"
+  method_type    = "GET"
+  source_dir     = "src/project/217_contains_duplicate/python"
+  api_id         = module.global_api_gateway.api_id
+  api_source_arn = module.global_api_gateway.execution_arn
+}
+
+module "api_217_contains_duplicate_go" {
+  source         = "./modules/api_lambda"
+  route_key      = "217_contains_duplicate/go"
+  method_type    = "GET"
+  source_dir     = "src/project/217_contains_duplicate/go"
   api_id         = module.global_api_gateway.api_id
   api_source_arn = module.global_api_gateway.execution_arn
   runtime        = "go1.x"
