@@ -1,3 +1,0 @@
-// Click on your username in top left of aws console > Securit Credentials > Access Keys
-export access_key = ""
-export secret_key = ""
