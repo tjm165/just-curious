@@ -1,4 +1,4 @@
-# Lambda Tests
+# Lamdba Language Experiments
 
 The goal of this is to creaet a general infastructure and scripts to run experiments in AWS Lambda.
 
