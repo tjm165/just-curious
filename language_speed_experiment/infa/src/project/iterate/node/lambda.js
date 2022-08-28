@@ -1,6 +1,6 @@
 exports.lambda_handler = async (event) => {
   // TODO implement
-  Array(10000)
+  Array(1000000)
     .fill(0)
     .map((_, i) => i * i);
 

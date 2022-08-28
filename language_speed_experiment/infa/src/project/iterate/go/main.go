@@ -18,8 +18,8 @@ type Response struct {
 
 func HandleRequest(request Request) (Response, error) {
 
-        for i:=0; i < 10000; i++ {
-                fmt.Println(i)
+        for i:=0; i < 1000000; i++ {
+                
         }   
 
 	var message bytes.Buffer
