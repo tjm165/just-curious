@@ -1,9 +1,3 @@
-# Stay Curious
-A playground for me to sandbox in
+# curiosity-ship
 
-## Bucket list
-- [ ] NLP
-- [ ] IRR vs FV vs NPV
-- [ ] Gemini
-
-## 
+🧐🚢
