@@ -1,3 +1,3 @@
-# curiosity-ship
+# just-curious
 
-🧐🚢
+🧐
