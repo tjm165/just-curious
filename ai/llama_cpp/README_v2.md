@@ -24,9 +24,5 @@ curl -X 'POST' \
  -H 'Content-Type: application/json' \
  -d '{
   "prompt": "How many pianos are in London?",
-  "stop": [
-    "\n",
-    "###"
-  ]
 }'
 ```
