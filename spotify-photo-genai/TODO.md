@@ -1,6 +1,7 @@
 # TODO
 
 - [ ] Understand Bard pricing
+- [ ] Look into git subtree
 
 # Article notes
 
