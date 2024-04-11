@@ -1,4 +1,0 @@
-[submodule "spotify-photo-genai"]
-	path = spotify-photo-genai
-	url = https://github.com/tjm165/spotify-photo-genai.git
-	branch = main
