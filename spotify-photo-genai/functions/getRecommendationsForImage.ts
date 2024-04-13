@@ -26,7 +26,7 @@ async function geminiPromptWithImage(prompt, imageParts) {
 }
 
 async function imageToTrackRecommendations(imageParts) {
-  const prompt = `You are a DJ. Please Generate a list of 5 songs in JSON format. The songs should relate to this image. Use the format like this example Example: {"recommendations": ["Song - Artist", "Song - Artist", ...]}`;
+  const prompt = `You are an assistant that generates JSON. You always return JSON with no additional text. Please Generate a list of 5 songs in JSON format. The songs should relate to this image. Use the format like this example Example: {"recommendations": ["Song - Artist", "Song - Artist", ...]}.`;
   const response = await geminiPromptWithImage(prompt, imageParts);
   return response;
 }
@@ -37,6 +37,18 @@ async function run() {
   ];
   const resp = await imageToTrackRecommendations(imageParts);
   console.log(resp);
+
+  console.log("-------");
+
+  // Could make more durable with regex
+  const resultString = resp.substring(
+    " ```json".length,
+    resp.length - "```".length
+  );
+  console.log(resultString);
+
+  const respJson = JSON.parse(resultString);
+  console.log(respJson);
 }
 
 run();
