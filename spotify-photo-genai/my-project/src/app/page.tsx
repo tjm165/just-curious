@@ -1,6 +1,13 @@
 import Image from "next/image";
-import { HomepageComponent } from "../components/homepage-component";
+import { SpotifySuggestions } from "@/components/spotify-suggestions";
+
+import { SpotifySuggestions2 } from "@/components/spotify-suggestions2";
 
 export default function Home() {
-  return <HomepageComponent />;
+  return (
+    <>
+      <SpotifySuggestions />
+      <SpotifySuggestions2 />
+    </>
+  );
 }
