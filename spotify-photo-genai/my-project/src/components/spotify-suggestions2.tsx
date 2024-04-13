@@ -28,9 +28,9 @@ import { Button } from "@/components/ui/button";
 export function SpotifySuggestions2() {
   return (
     <div className="flex flex-col h-screen">
-      <header className="flex items-center h-14 px-4 border-b gap-2 sm:gap-4 text-sm font-semibold dark:border-gray-800">
+      <header className="flex items-center h-14 px-4 border-b gap-2 sm:gap-4 text-sm font-semibold light:border-gray-800">
         <div className="flex items-center gap-2">
-          <MusicIcon className="w-6 h-6 fill-gray-900 dark:fill-gray-50" />
+          <MusicIcon className="w-6 h-6 fill-gray-900 light:fill-gray-50" />
           Spotify Suggestions
         </div>
         <div className="ml-auto flex items-center gap-4 md:gap-2">
@@ -56,7 +56,7 @@ export function SpotifySuggestions2() {
           <div className="grid gap-4 md:grid-cols-2">
             <div className="flex flex-col gap-2 items-center">
               <h1 className="text-3xl font-bold">Mood</h1>
-              <p className="text-gray-500 grid gap-2 md:text-base/relaxed dark:text-gray-400">
+              <p className="text-gray-500 grid gap-2 md:text-base/relaxed light:text-gray-400">
                 Upload an image to get personalized song suggestions based on
                 your mood. Make sure your face is visible in the image.
               </p>
@@ -91,7 +91,7 @@ export function SpotifySuggestions2() {
                   />
                   <div className="grid gap-1.5">
                     <h3 className="font-bold">Blinding Lights</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-sm text-gray-500 light:text-gray-400">
                       The Weeknd
                     </p>
                   </div>
@@ -106,7 +106,7 @@ export function SpotifySuggestions2() {
                   />
                   <div className="grid gap-1.5">
                     <h3 className="font-bold">Blinding Lights</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-sm text-gray-500 light:text-gray-400">
                       The Weeknd
                     </p>
                   </div>
@@ -121,7 +121,7 @@ export function SpotifySuggestions2() {
                   />
                   <div className="grid gap-1.5">
                     <h3 className="font-bold">Blinding Lights</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-sm text-gray-500 light:text-gray-400">
                       The Weeknd
                     </p>
                   </div>
@@ -136,7 +136,7 @@ export function SpotifySuggestions2() {
                   />
                   <div className="grid gap-1.5">
                     <h3 className="font-bold">Blinding Lights</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-sm text-gray-500 light:text-gray-400">
                       The Weeknd
                     </p>
                   </div>
@@ -151,7 +151,7 @@ export function SpotifySuggestions2() {
                   />
                   <div className="grid gap-1.5">
                     <h3 className="font-bold">Blinding Lights</h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-sm text-gray-500 light:text-gray-400">
                       The Weeknd
                     </p>
                   </div>
