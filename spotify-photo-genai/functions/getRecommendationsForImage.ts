@@ -13,22 +13,30 @@ function fileToGenerativePart(path, mimeType) {
   };
 }
 
-export default async function getRecommendationForImage() {
+async function geminiPromptWithImage(prompt, imageParts) {
   const genAI = new GoogleGenerativeAI(process.env.BARD_API_KEY);
 
   // For text-and-image input (multimodal), use the gemini-pro-vision model
   const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
 
-  const prompt = "Describe this picture";
-
-  const imageParts = [
-    fileToGenerativePart(`${process.cwd()}/sandbox/image1.png`, "image/png"),
-  ];
-
   const result = await model.generateContent([prompt, ...imageParts]);
   const response = await result.response;
   const text = response.text();
-  console.log(text);
+  return text;
 }
 
-getRecommendationForImage();
+async function imageToTrackRecommendations(imageParts) {
+  const prompt = `You are a DJ. Please Generate a list of 5 songs in JSON format. The songs should relate to this image. Use the format like this example Example: {"recommendations": ["Song - Artist", "Song - Artist", ...]}`;
+  const response = await geminiPromptWithImage(prompt, imageParts);
+  return response;
+}
+
+async function run() {
+  const imageParts = [
+    fileToGenerativePart(`${process.cwd()}/functions/image1.png`, "image/png"),
+  ];
+  const resp = await imageToTrackRecommendations(imageParts);
+  console.log(resp);
+}
+
+run();
