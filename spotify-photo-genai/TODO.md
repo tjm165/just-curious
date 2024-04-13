@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] Understand Bard pricing
+- [ ] Gemini Pricing Starts May 2
 - [ ] Look into git subtree
 
 # Article notes

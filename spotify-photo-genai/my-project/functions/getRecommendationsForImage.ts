@@ -1,3 +1,4 @@
+"use server";
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -51,4 +52,21 @@ async function run() {
   console.log(respJson);
 }
 
-run();
+export async function handleSubmit(imageURL) {
+  const imageParts = [fileToGenerativePart(imageURL, "image/png")];
+
+  const resp = await imageToTrackRecommendations(imageParts);
+  console.log(resp);
+
+  console.log("-------");
+
+  // Could make more durable with regex
+  const resultString = resp.substring(
+    " ```json".length,
+    resp.length - "```".length
+  );
+  console.log(resultString);
+
+  const respJson = JSON.parse(resultString);
+  console.log(respJson);
+}

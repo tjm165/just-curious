@@ -29,8 +29,25 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaGithub } from "react-icons/fa6";
 import React, { useState, useRef } from "react";
+import { handleSubmit } from "../../functions/getRecommendationsForImage";
 
 export function SpotifySuggestions() {
+  const [image, setImage] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleImageSelect = () => {
+    // Triggering a click on the file input element
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageURL = URL.createObjectURL(file);
+      setImage(imageURL);
+    }
+  };
+
   const videoRef = useRef(null);
   const [imgSrc, setImgSrc] = useState("");
 
@@ -85,22 +102,32 @@ export function SpotifySuggestions() {
       <main className="flex-1 overflow-auto p-4 md:p-6">
         <div className="container mx-auto grid gap-4 grid-cols-2 text-center">
           {/* ChatGPT Start */}
-          <div>
+          {/* <div>
             <div>{imgSrc && <img src={imgSrc} alt="Captured" />}</div>
             <video ref={videoRef} width="400" height="300" autoPlay></video>
-          </div>
+          </div> */}
           {/* ChatGPT End*/}
 
           <div>
             <h1 className="text-2xl font-bold">Upload your image</h1>
             <div className="mx-auto w-full max-w-sm space-y-2">
-              <img
-                alt="Uploaded image"
-                className="rounded-lg object-cover border border-gray-200 w-full aspect-square overflow-hidden dark:border-gray-800 dark:border-gray-800"
-                height="400"
-                src="/placeholder.svg"
-                width="400"
-              />
+              <div onClick={handleImageSelect} style={{ cursor: "pointer" }}>
+                <img
+                  alt="Uploaded image"
+                  className="rounded-lg object-cover border border-gray-200 w-full aspect-square overflow-hidden dark:border-gray-800 dark:border-gray-800"
+                  height="400"
+                  src={image || "/placeholder.svg"}
+                  width="400"
+                />
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  onChange={handleFileChange}
+                />
+              </div>
 
               <div>
                 <button onClick={handleCaptureImage}>Capture Image</button>
@@ -116,7 +143,9 @@ export function SpotifySuggestions() {
               >
                 Start Camera
               </Button>
-              <Button className="w-full">Upload a new image</Button>
+              <Button className="w-full" onClick={() => handleSubmit(image)}>
+                Submit
+              </Button>
             </div>
           </div>
           <div>
