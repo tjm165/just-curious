@@ -1,31 +1,24 @@
-// import * as SpotifyWebApi from "spotify-web-api-node";
-const SpotifyWebApi = require("spotify-web-api-node");
+import * as SpotifyWebApi from "@spotify/web-api-ts-sdk";
+
 import * as dotenv from "dotenv";
-dotenv.config(); // Load environment variables from .env file
-
-async function getSpotifyApi() {
-  // credentials are optional
-  var spotifyApi = new SpotifyWebApi({
-    clientId: process.env.SPOTIFY_CLIENT_ID,
-    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  });
-
-  // Save the access token so that it's used in future calls
-  await spotifyApi.setAccessToken(
-    (
-      await spotifyApi.clientCredentialsGrant()
-    ).body["access_token"]
-  );
-
-  return spotifyApi;
-}
+dotenv.config();
 
 async function run() {
-  const spotifyApi = await getSpotifyApi();
-  // Get Elvis' albums
-  const res = await spotifyApi.getArtistAlbums("43ZHCT0cAZBISjO8DG9PnE");
-  console.log("Artist albums", res.body);
-  console.log(res);
+  const sdk = SpotifyWebApi.SpotifyApi.withClientCredentials(
+    process.env.SPOTIFY_CLIENT_ID,
+    process.env.SPOTIFY_CLIENT_SECRET
+  );
+
+  const items = await sdk.search("The Beatles", ["track"]);
+
+  console.table(
+    items.tracks.items.map((item) => ({
+      name: item.name,
+      popularity: item.popularity,
+    }))
+  );
+
+  console.log(items.tracks.items[0].external_urls.spotify);
 }
 
 run();
