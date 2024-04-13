@@ -34,7 +34,7 @@ export function SpotifySuggestions() {
   const videoRef = useRef(null);
   const [imgSrc, setImgSrc] = useState("");
 
-  const captureImage = async () => {
+  const handleCaptureImage = async () => {
     if (videoRef.current) {
       const video = videoRef.current;
       const canvas = document.createElement("canvas");
@@ -47,7 +47,7 @@ export function SpotifySuggestions() {
     }
   };
 
-  const handleStartCapture = () => {
+  const handleStartCamera = () => {
     navigator.mediaDevices
       .getUserMedia({ video: true })
       .then((stream) => {
@@ -58,7 +58,7 @@ export function SpotifySuggestions() {
       .catch((err) => console.error("Error accessing camera:", err));
   };
 
-  const handleStopCapture = () => {
+  const handleStopCamera = () => {
     if (videoRef.current) {
       const stream = videoRef.current.srcObject;
       if (stream) {
@@ -103,16 +103,16 @@ export function SpotifySuggestions() {
               />
 
               <div>
-                <button onClick={captureImage}>Capture Image</button>
+                <button onClick={handleCaptureImage}>Capture Image</button>
                 <br></br>
 
-                <button onClick={handleStopCapture}>Stop Camera</button>
+                <button onClick={handleStopCamera}>Stop Camera</button>
               </div>
 
               <Button
                 className="w-full"
                 variant="outline"
-                onClick={handleStartCapture}
+                onClick={handleStartCamera}
               >
                 Start Camera
               </Button>
