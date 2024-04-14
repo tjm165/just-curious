@@ -29,10 +29,26 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaGithub } from "react-icons/fa6";
 import React, { useState, useRef } from "react";
-import { handleSubmit } from "../../functions/getRecommendationsForImage";
+import { getRecommendationsFromImage } from "../../functions/getRecommendationsForImage";
+import { FileUploader } from "react-drag-drop-files";
+const fileTypes = ["JPG", "PNG", "GIF"];
 
 export function SpotifySuggestions() {
+  const [file, setFile] = useState<File | null>(null);
+  const [buf, setBuf] = useState(null);
   const [image, setImage] = useState(null);
+
+  const handleChange = async (file: File) => {
+    setFile(file);
+    const imageURL = URL.createObjectURL(file);
+    setImage(imageURL);
+    console.log(file);
+    const ab = await file.arrayBuffer();
+
+    console.log(Buffer.from(ab));
+    setBuf(Buffer.from(ab));
+  };
+
   const fileInputRef = useRef(null);
 
   const handleImageSelect = () => {
@@ -85,6 +101,11 @@ export function SpotifySuggestions() {
     }
   };
 
+  async function handleSubmit(b: any): void {
+    const resp = await getRecommendationsFromImage(b);
+    console.log(resp);
+  }
+
   return (
     <div className="flex flex-col h-screen w-full bg-gradient-to-br from-green-400 to-green-600">
       <header className="flex items-center h-14 px-4 border-b sm:h-16 lg:px-6">
@@ -107,6 +128,12 @@ export function SpotifySuggestions() {
             <video ref={videoRef} width="400" height="300" autoPlay></video>
           </div> */}
           {/* ChatGPT End*/}
+
+          <FileUploader
+            handleChange={handleChange}
+            name="file"
+            types={fileTypes}
+          />
 
           <div>
             <h1 className="text-2xl font-bold">Upload your image</h1>
@@ -143,9 +170,18 @@ export function SpotifySuggestions() {
               >
                 Start Camera
               </Button>
-              <Button className="w-full" onClick={() => handleSubmit(image)}>
-                Submit
-              </Button>
+              {buf === null ? (
+                <Button className="w-full" disabled={true}>
+                  Submit
+                </Button>
+              ) : (
+                <Button
+                  className="w-full"
+                  onClick={() => handleSubmit(JSON.parse(JSON.stringify(buf)))}
+                >
+                  Submit
+                </Button>
+              )}
             </div>
           </div>
           <div>

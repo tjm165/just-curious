@@ -1,7 +1,8 @@
 # TODO
 
-- [ ] Gemini Pricing Starts May 2
+- [x] Gemini Pricing Starts May 2
 - [ ] Look into git subtree
+- [ ] Understand the types! Especially goofy buffer standards
 
 # Article notes
 

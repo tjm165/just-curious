@@ -4,17 +4,11 @@ import * as dotenv from "dotenv";
 dotenv.config();
 const fs = require("fs");
 
-// Converts local file information to a GoogleGenerativeAI.Part object.
-function fileToGenerativePart(path, mimeType) {
-  return {
-    inlineData: {
-      data: Buffer.from(fs.readFileSync(path)).toString("base64"),
-      mimeType,
-    },
-  };
-}
+const mimeType = "image/png";
 
-async function geminiPromptWithImage(prompt, imageParts) {
+// Converts local file information to a GoogleGenerativeAI.Part object.
+
+async function geminiPromptWithImage(prompt: string, imageParts: any) {
   const genAI = new GoogleGenerativeAI(process.env.BARD_API_KEY);
 
   // For text-and-image input (multimodal), use the gemini-pro-vision model
@@ -26,34 +20,28 @@ async function geminiPromptWithImage(prompt, imageParts) {
   return text;
 }
 
-async function imageToTrackRecommendations(imageParts) {
+async function imageToTrackRecommendations(imageParts: any) {
   const prompt = `You are an assistant that generates JSON. You always return JSON with no additional text. Please Generate a list of 5 songs in JSON format. The songs should relate to this image. Use the format like this example Example: {"recommendations": ["Song - Artist", "Song - Artist", ...]}.`;
   const response = await geminiPromptWithImage(prompt, imageParts);
   return response;
 }
 
-async function run() {
-  const imageParts = [
-    fileToGenerativePart(`${process.cwd()}/functions/image1.png`, "image/png"),
-  ];
-  const resp = await imageToTrackRecommendations(imageParts);
-  console.log(resp);
+export async function getRecommendationsFromImage(buf: any) {
+  console.log("BUFF IS");
+  console.log(buf);
+  console.log(typeof buf);
+  console.log(Object.keys(buf));
 
-  console.log("-------");
+  const fileToGenerativePart = () => {
+    return {
+      inlineData: {
+        data: Buffer.from(buf).toString("base64"),
+        mimeType,
+      },
+    };
+  };
 
-  // Could make more durable with regex
-  const resultString = resp.substring(
-    " ```json".length,
-    resp.length - "```".length
-  );
-  console.log(resultString);
-
-  const respJson = JSON.parse(resultString);
-  console.log(respJson);
-}
-
-export async function handleSubmit(imageURL) {
-  const imageParts = [fileToGenerativePart(imageURL, "image/png")];
+  const imageParts = [fileToGenerativePart()];
 
   const resp = await imageToTrackRecommendations(imageParts);
   console.log(resp);
@@ -69,4 +57,6 @@ export async function handleSubmit(imageURL) {
 
   const respJson = JSON.parse(resultString);
   console.log(respJson);
+
+  return respJson;
 }
