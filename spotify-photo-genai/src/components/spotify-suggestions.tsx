@@ -122,37 +122,22 @@ export function SpotifySuggestions() {
       </header>
       <main className="flex-1 overflow-auto p-4 md:p-6">
         <div className="container mx-auto grid gap-4 grid-cols-2 text-center">
-          {/* ChatGPT Start */}
-          {/* <div>
-            <div>{imgSrc && <img src={imgSrc} alt="Captured" />}</div>
-            <video ref={videoRef} width="400" height="300" autoPlay></video>
-          </div> */}
-          {/* ChatGPT End*/}
-
-          <FileUploader
-            handleChange={handleChange}
-            name="file"
-            types={fileTypes}
-          />
-
           <div>
             <h1 className="text-2xl font-bold">Upload your image</h1>
             <div className="mx-auto w-full max-w-sm space-y-2">
-              <div onClick={handleImageSelect} style={{ cursor: "pointer" }}>
-                <img
-                  alt="Uploaded image"
-                  className="rounded-lg object-cover border border-gray-200 w-full aspect-square overflow-hidden dark:border-gray-800 dark:border-gray-800"
-                  height="400"
-                  src={image || "/placeholder.svg"}
-                  width="400"
-                />
-
-                <input
-                  type="file"
-                  accept="image/*"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  onChange={handleFileChange}
+              <div className="container mx-auto grid ">
+                <FileUploader
+                  classes="drop_area drop_zone"
+                  handleChange={handleChange}
+                  name="file"
+                  types={fileTypes}
+                  children={
+                    <img
+                      alt="Uploaded image"
+                      className="rounded-lg object-cover border border-gray-200 w-full aspect-square overflow-hidden dark:border-gray-800 dark:border-gray-800"
+                      src={image || "/placeholder.svg"}
+                    />
+                  }
                 />
               </div>
 
