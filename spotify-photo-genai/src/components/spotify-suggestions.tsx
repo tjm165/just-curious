@@ -135,7 +135,7 @@ export function SpotifySuggestions() {
                     <img
                       alt="Uploaded image"
                       className="rounded-lg object-cover border border-gray-200 w-full aspect-square overflow-hidden dark:border-gray-800 dark:border-gray-800"
-                      src={image || "/placeholder.svg"}
+                      src={image || "/placeholder-image.jpg"}
                     />
                   }
                 />
