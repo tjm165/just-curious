@@ -42,10 +42,8 @@ export function SpotifySuggestions() {
     setFile(file);
     const imageURL = URL.createObjectURL(file);
     setImage(imageURL);
-    console.log(file);
     const ab = await file.arrayBuffer();
 
-    console.log(Buffer.from(ab));
     setBuf(Buffer.from(ab));
   };
 
