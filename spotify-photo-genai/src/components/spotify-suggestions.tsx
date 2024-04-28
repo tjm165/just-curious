@@ -99,9 +99,20 @@ export function SpotifySuggestions() {
     }
   };
 
+  type SpotifyTrack = {
+    songName: string;
+    artistName: string;
+    songLink: string;
+    imageHref: string;
+  };
+
+  const [spotifyTracks, setSpotifyTracks] = useState<null | SpotifyTrack[]>(
+    null
+  );
+
   async function handleSubmit(b: any): void {
     const resp = await getRecommendationsFromImage(b);
-    console.log(resp);
+    setSpotifyTracks(resp);
   }
 
   return (
@@ -139,7 +150,7 @@ export function SpotifySuggestions() {
                 />
               </div>
 
-              <div>
+              {/* <div>
                 <button onClick={handleCaptureImage}>Capture Image</button>
                 <br></br>
 
@@ -152,7 +163,7 @@ export function SpotifySuggestions() {
                 onClick={handleStartCamera}
               >
                 Start Camera
-              </Button>
+              </Button> */}
               {buf === null ? (
                 <Button className="w-full" disabled={true}>
                   Submit
@@ -170,81 +181,25 @@ export function SpotifySuggestions() {
           <div>
             <h1 className="text-2xl font-bold">Top Suggestions</h1>
             <ul className="grid gap-4">
-              <li className="flex items-center gap-4">
-                <img
-                  alt="Song Image"
-                  className="aspect-square rounded-lg object-cover overflow-hidden"
-                  height={100}
-                  src="/placeholder.svg"
-                  width={100}
-                />
-                <div className="grid gap-1.5">
-                  <h3 className="font-bold">Blinding Lights</h3>
-                  <p className="text-sm text-gray-500 light:text-gray-400">
-                    The Weeknd
-                  </p>
-                </div>
-              </li>
-              <li className="flex items-center gap-4">
-                <img
-                  alt="Song Image"
-                  className="aspect-square rounded-lg object-cover overflow-hidden"
-                  height={100}
-                  src="/placeholder.svg"
-                  width={100}
-                />
-                <div className="grid gap-1.5">
-                  <h3 className="font-bold">Blinding Lights</h3>
-                  <p className="text-sm text-gray-500 light:text-gray-400">
-                    The Weeknd
-                  </p>
-                </div>
-              </li>
-              <li className="flex items-center gap-4">
-                <img
-                  alt="Song Image"
-                  className="aspect-square rounded-lg object-cover overflow-hidden"
-                  height={100}
-                  src="/placeholder.svg"
-                  width={100}
-                />
-                <div className="grid gap-1.5">
-                  <h3 className="font-bold">Blinding Lights</h3>
-                  <p className="text-sm text-gray-500 light:text-gray-400">
-                    The Weeknd
-                  </p>
-                </div>
-              </li>
-              <li className="flex items-center gap-4">
-                <img
-                  alt="Song Image"
-                  className="aspect-square rounded-lg object-cover overflow-hidden"
-                  height={100}
-                  src="/placeholder.svg"
-                  width={100}
-                />
-                <div className="grid gap-1.5">
-                  <h3 className="font-bold">Blinding Lights</h3>
-                  <p className="text-sm text-gray-500 light:text-gray-400">
-                    The Weeknd
-                  </p>
-                </div>
-              </li>
-              <li className="flex items-center gap-4">
-                <img
-                  alt="Song Image"
-                  className="aspect-square rounded-lg object-cover overflow-hidden"
-                  height={100}
-                  src="/placeholder.svg"
-                  width={100}
-                />
-                <div className="grid gap-1.5">
-                  <h3 className="font-bold">Blinding Lights</h3>
-                  <p className="text-sm text-gray-500 light:text-gray-400">
-                    The Weeknd
-                  </p>
-                </div>
-              </li>
+              {spotifyTracks?.map((spotifyTrack) => {
+                return (
+                  <li className="flex items-center gap-4">
+                    <img
+                      alt="Song Image"
+                      className="aspect-square rounded-lg object-cover overflow-hidden"
+                      height={100}
+                      src={spotifyTrack.imageHref}
+                      width={100}
+                    />
+                    <div className="grid gap-1.5">
+                      <h3 className="font-bold">{spotifyTrack.songName}</h3>
+                      <p className="text-sm text-gray-500 light:text-gray-400">
+                        {spotifyTrack.artistName}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

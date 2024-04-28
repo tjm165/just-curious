@@ -1,5 +1,7 @@
 "use server";
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+import * as SpotifyWebApi from "@spotify/web-api-ts-sdk";
+
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -17,7 +19,9 @@ async function geminiPromptWithImage(prompt: string, imageParts: any) {
   return text;
 }
 
-async function imageToTrackRecommendations(imageParts: any) {
+async function imageToTrackRecommendations(
+  imageParts: any
+): Promise<{ recommendations: string[] }> {
   const prompt = `You are an assistant that generates JSON. You always return JSON with no additional text. Please Generate a list of 5 songs in JSON format. The songs should relate to this image. Use the format like this example Example: {"recommendations": ["Song - Artist", "Song - Artist", ...]}.`;
   const response = await geminiPromptWithImage(prompt, imageParts);
 
@@ -27,6 +31,23 @@ async function imageToTrackRecommendations(imageParts: any) {
     response.length - "```".length
   );
   return JSON.parse(responsePrime);
+}
+
+async function spotifySearchForTrack(trackQuery: string) {
+  const sdk = SpotifyWebApi.SpotifyApi.withClientCredentials(
+    // @ts-ignore
+    process.env.SPOTIFY_CLIENT_ID,
+    process.env.SPOTIFY_CLIENT_SECRET
+  );
+
+  const item = await sdk.search(trackQuery, ["track"]);
+
+  return {
+    songName: item.tracks.items[0].name,
+    artistName: item.tracks.items[0].artists[0].name,
+    songLink: item.tracks.items[0].external_urls.spotify,
+    imageHref: item.tracks.items[0].album.images[0].url,
+  };
 }
 
 export async function getRecommendationsFromImage(buf: any) {
@@ -39,6 +60,13 @@ export async function getRecommendationsFromImage(buf: any) {
     },
   ];
 
-  const response = await imageToTrackRecommendations(imageParts);
-  return response;
+  const recommendations = await imageToTrackRecommendations(imageParts);
+  console.log(recommendations);
+
+  const trackPromises = recommendations.recommendations.map(
+    (recommendation: string) => spotifySearchForTrack(recommendation)
+  );
+  const allTracks = await Promise.all(trackPromises);
+
+  return allTracks;
 }
