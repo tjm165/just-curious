@@ -11,4 +11,4 @@
 1. docker run --rm -it -p 80:80 vulnerables/web-dvwa
 2. http://localhost/login.php
 3. admin / password
-   4.http://localhost/index.php
+4. http://localhost/index.php
