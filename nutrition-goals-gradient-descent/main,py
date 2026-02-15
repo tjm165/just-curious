@@ -1,0 +1,75 @@
+import numpy as np
+from scipy.optimize import minimize
+
+# Food macros: [calories, protein] per serving
+foods = {
+    'Lentils': [100, 8],
+    'Chickpeas': [120, 6],
+    'Rice': [160, 4],
+    'Rotini': [190, 7],
+    'Edamame': [90, 10],
+    'Apple': [130, 0],
+    'Nuts': [170, 8]
+}
+
+# Fixed breakfast
+breakfast_cal = 660
+breakfast_protein = 17
+
+# Targets
+max_cal = 2244  # 2200 + 2%
+min_protein = 110
+
+# Convert to arrays
+food_names = list(foods.keys())
+macros = np.array([foods[f] for f in food_names])
+
+def objective(servings):
+    """Minimize calories while meeting protein"""
+    total_cal = breakfast_cal + np.dot(servings, macros[:, 0])
+    return total_cal
+
+def constraint_cal(servings):
+    """Calories must be <= max_cal"""
+    return max_cal - (breakfast_cal + np.dot(servings, macros[:, 0]))
+
+def constraint_protein(servings):
+    """Protein must be >= min_protein"""
+    return breakfast_protein + np.dot(servings, macros[:, 1]) - min_protein
+
+# Initial guess
+x0 = np.array([4.5, 2.5, 1.5, 1.5, 3, 0, 0])
+
+# Bounds (servings must be >= 0)
+bounds = [(0, 10) for _ in range(7)]
+
+# Constraints: cal <= max, protein >= min
+constraints = [
+    {'type': 'ineq', 'fun': constraint_cal},
+    {'type': 'ineq', 'fun': constraint_protein}
+]
+
+# Solve
+result = minimize(objective, x0, method='SLSQP', bounds=bounds, constraints=constraints)
+
+# Results
+optimal_servings = result.x
+total_cal = breakfast_cal + np.dot(optimal_servings, macros[:, 0])
+total_protein = breakfast_protein + np.dot(optimal_servings, macros[:, 1])
+
+print("OPTIMAL MEAL PLAN:")
+print("=" * 50)
+print("\nBreakfast (fixed):")
+print("  Oatmeal: 2, Banana: 2, Chia: 1")
+print("  (660 cal, 17g protein)")
+print("\nLunch/Dinner + Snacks:")
+for i, name in enumerate(food_names):
+    if optimal_servings[i] > 0.01:  # Only show if meaningful
+        print(f"  {name}: {optimal_servings[i]:.2f} servings")
+
+print("\n" + "=" * 50)
+print(f"Total Calories: {total_cal:.1f} (max: {max_cal})")
+print(f"Total Protein: {total_protein:.1f}g (min: {min_protein}g)")
+print("=" * 50)
+print(f"\n✓ Calories under limit: {total_cal <= max_cal}")
+print(f"✓ Protein over minimum: {total_protein >= min_protein}")
