@@ -22,7 +22,7 @@ python3 main,py \
 ## Usage Example Output
 Both of the above examples will print the following output
 
-```bash
+```
 python3 main,py --foods foods_example.json --targets targets_example.json
 Optimizing meal plan...
 
