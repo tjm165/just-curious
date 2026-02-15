@@ -1,75 +1,126 @@
 import numpy as np
 from scipy.optimize import minimize
 
-# Food macros: [calories, protein] per serving
+# Food macros: [calories, protein, min_servings] per serving
 foods = {
-    'Lentils': [100, 8],
-    'Chickpeas': [120, 6],
-    'Rice': [160, 4],
-    'Rotini': [190, 7],
-    'Edamame': [90, 10],
-    'Apple': [130, 0],
-    'Nuts': [170, 8]
+    # Breakfast items
+    'Oatmeal': {'cal': 150, 'protein': 5, 'min': 2},
+    'Banana': {'cal': 105, 'protein': 1, 'min': 2},
+    'Chia_seeds': {'cal': 150, 'protein': 5, 'min': 1},
+    
+    # Lunch/Dinner items
+    'Lentils': {'cal': 100, 'protein': 8, 'min': 1},
+    'Chickpeas': {'cal': 120, 'protein': 6, 'min': 1},
+    'Rice': {'cal': 160, 'protein': 4, 'min': 1},
+    'Rotini': {'cal': 190, 'protein': 7, 'min': 1},
+    
+    # Snacks
+    'Edamame': {'cal': 90, 'protein': 10, 'min': 0},
+    'Apple': {'cal': 130, 'protein': 0, 'min': 0},
+    'Nuts': {'cal': 170, 'protein': 8, 'min': 0}
 }
 
-# Fixed breakfast
-breakfast_cal = 660
-breakfast_protein = 17
-
 # Targets
-max_cal = 2244  # 2200 + 2%
+target_cal = 2200
+cal_tolerance = target_cal * 0.02  # 2% = 44 calories
+min_cal = target_cal - cal_tolerance  # 2156
+max_cal = target_cal + cal_tolerance  # 2244
 min_protein = 110
 
 # Convert to arrays
 food_names = list(foods.keys())
-macros = np.array([foods[f] for f in food_names])
+cal_array = np.array([foods[f]['cal'] for f in food_names])
+protein_array = np.array([foods[f]['protein'] for f in food_names])
+min_servings = np.array([foods[f]['min'] for f in food_names])
 
-def objective(servings):
-    """Minimize calories while meeting protein"""
-    total_cal = breakfast_cal + np.dot(servings, macros[:, 0])
-    return total_cal
+def objective_and_penalty(servings):
+    """Minimize deviation from target with penalties for constraint violations"""
+    total_cal = np.dot(servings, cal_array)
+    total_protein = np.dot(servings, protein_array)
+    
+    # Main objective: get close to target calories
+    cal_error = (total_cal - target_cal) ** 2
+    
+    # Heavy penalties for constraint violations
+    penalty = 0
+    
+    # Penalty for calories out of range
+    if total_cal < min_cal:
+        penalty += 10000 * (min_cal - total_cal) ** 2
+    if total_cal > max_cal:
+        penalty += 10000 * (total_cal - max_cal) ** 2
+    
+    # Penalty for protein under minimum
+    if total_protein < min_protein:
+        penalty += 10000 * (min_protein - total_protein) ** 2
+    
+    return cal_error + penalty
 
-def constraint_cal(servings):
-    """Calories must be <= max_cal"""
-    return max_cal - (breakfast_cal + np.dot(servings, macros[:, 0]))
+# Initial guess - start at minimums
+x0 = min_servings.copy().astype(float)
 
-def constraint_protein(servings):
-    """Protein must be >= min_protein"""
-    return breakfast_protein + np.dot(servings, macros[:, 1]) - min_protein
+# Bounds: each food must be >= its minimum
+bounds = [(min_servings[i], 10) for i in range(len(food_names))]
 
-# Initial guess
-x0 = np.array([4.5, 2.5, 1.5, 1.5, 3, 0, 0])
-
-# Bounds (servings must be >= 0)
-bounds = [(0, 10) for _ in range(7)]
-
-# Constraints: cal <= max, protein >= min
-constraints = [
-    {'type': 'ineq', 'fun': constraint_cal},
-    {'type': 'ineq', 'fun': constraint_protein}
-]
-
-# Solve
-result = minimize(objective, x0, method='SLSQP', bounds=bounds, constraints=constraints)
+# Optimize
+print("Optimizing meal plan...")
+result = minimize(objective_and_penalty, x0, method='L-BFGS-B', bounds=bounds,
+                  options={'maxiter': 1000})
 
 # Results
 optimal_servings = result.x
-total_cal = breakfast_cal + np.dot(optimal_servings, macros[:, 0])
-total_protein = breakfast_protein + np.dot(optimal_servings, macros[:, 1])
+total_cal = np.dot(optimal_servings, cal_array)
+total_protein = np.dot(optimal_servings, protein_array)
 
-print("OPTIMAL MEAL PLAN:")
-print("=" * 50)
-print("\nBreakfast (fixed):")
-print("  Oatmeal: 2, Banana: 2, Chia: 1")
-print("  (660 cal, 17g protein)")
-print("\nLunch/Dinner + Snacks:")
+print("\nOPTIMAL MEAL PLAN:")
+print("=" * 60)
+
+# Separate by meal type
+breakfast_items = ['Oatmeal', 'Banana', 'Chia_seeds']
+lunch_items = ['Lentils', 'Chickpeas', 'Rice', 'Rotini']
+snack_items = ['Edamame', 'Apple', 'Nuts']
+
+print("\nBREAKFAST:")
+breakfast_cal = breakfast_protein = 0
 for i, name in enumerate(food_names):
-    if optimal_servings[i] > 0.01:  # Only show if meaningful
-        print(f"  {name}: {optimal_servings[i]:.2f} servings")
+    if name in breakfast_items and optimal_servings[i] > 0.01:
+        print(f"  {name}: {optimal_servings[i]:.2f} servings (min: {min_servings[i]})")
+        breakfast_cal += optimal_servings[i] * cal_array[i]
+        breakfast_protein += optimal_servings[i] * protein_array[i]
+print(f"  Subtotal: {breakfast_cal:.0f} cal, {breakfast_protein:.1f}g protein")
 
-print("\n" + "=" * 50)
-print(f"Total Calories: {total_cal:.1f} (max: {max_cal})")
+print("\nLUNCH/DINNER:")
+lunch_cal = lunch_protein = 0
+for i, name in enumerate(food_names):
+    if name in lunch_items and optimal_servings[i] > 0.01:
+        print(f"  {name}: {optimal_servings[i]:.2f} servings (min: {min_servings[i]})")
+        lunch_cal += optimal_servings[i] * cal_array[i]
+        lunch_protein += optimal_servings[i] * protein_array[i]
+print(f"  Subtotal: {lunch_cal:.0f} cal, {lunch_protein:.1f}g protein")
+
+print("\nSNACKS:")
+snack_cal = snack_protein = 0
+for i, name in enumerate(food_names):
+    if name in snack_items and optimal_servings[i] > 0.01:
+        print(f"  {name}: {optimal_servings[i]:.2f} servings (min: {min_servings[i]})")
+        snack_cal += optimal_servings[i] * cal_array[i]
+        snack_protein += optimal_servings[i] * protein_array[i]
+print(f"  Subtotal: {snack_cal:.0f} cal, {snack_protein:.1f}g protein")
+
+print("\n" + "=" * 60)
+print(f"Total Calories: {total_cal:.1f} (range: {min_cal:.0f}-{max_cal:.0f})")
 print(f"Total Protein: {total_protein:.1f}g (min: {min_protein}g)")
-print("=" * 50)
-print(f"\n✓ Calories under limit: {total_cal <= max_cal}")
-print(f"✓ Protein over minimum: {total_protein >= min_protein}")
+print("=" * 60)
+
+# Validation
+cal_in_range = min_cal <= total_cal <= max_cal
+protein_ok = total_protein >= min_protein
+
+print(f"\n✓ Calories in range: {cal_in_range}")
+print(f"✓ Protein over minimum: {protein_ok}")
+print(f"✓ Optimization successful: {result.success}")
+
+if cal_in_range and protein_ok:
+    print("\n🎯 ALL CONSTRAINTS MET!")
+else:
+    print(f"\n⚠️ Constraints not fully met.")
