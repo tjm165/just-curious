@@ -1,0 +1,5 @@
+{
+  "target_cal": 2200,
+  "cal_tolerance_percent": 2,
+  "min_protein": 110
+}

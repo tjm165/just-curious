@@ -1,0 +1,12 @@
+{
+  "Oatmeal": {"cal": 150, "protein": 5, "min": 2},
+  "Banana": {"cal": 105, "protein": 1, "min": 2},
+  "Chia_seeds": {"cal": 150, "protein": 5, "min": 1},
+  "Lentils": {"cal": 100, "protein": 8, "min": 1},
+  "Chickpeas": {"cal": 120, "protein": 6, "min": 1},
+  "Rice": {"cal": 160, "protein": 4, "min": 1},
+  "Rotini": {"cal": 190, "protein": 7, "min": 1},
+  "Edamame": {"cal": 90, "protein": 10, "min": 0},
+  "Apple": {"cal": 130, "protein": 0, "min": 0},
+  "Nuts": {"cal": 170, "protein": 8, "min": 0}
+}
